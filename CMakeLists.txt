@@ -12,7 +12,7 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 # mpc library
 add_library(mpc INTERFACE)
-target_include_directories(mpc INTERFACE include)
+target_include_directories(mpc INTERFACE .)
 target_link_libraries(mpc INTERFACE Eigen3::Eigen)
 
 # test
