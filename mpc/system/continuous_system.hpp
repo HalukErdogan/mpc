@@ -16,8 +16,8 @@ class ContinuousSystem {
     const size_t n_state = NumState;
     const size_t n_control = NumControl;
 
-    virtual State dynamics(const State &state, const Control &control,
-                           const Time &time) const = 0;
+    virtual void dynamics(const State &state, const Control &control,
+                           const Time &time, State &result) const = 0;
 };
 
 }  // namespace system
