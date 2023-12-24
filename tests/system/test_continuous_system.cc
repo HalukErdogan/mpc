@@ -6,7 +6,7 @@ using namespace mpc::system;
 
 class OneDimCart : public ContinuousSystem<2, 1> {
    public:
-    void dynamics(const State &state, const Control &control,
+    void Dynamics(const State &state, const Control &control,
                    const Time &time, State &result) const override {
         const auto &pos = state(0);
         const auto &vel = state(1);
@@ -27,9 +27,10 @@ TEST(System, ContinuousSystemInit) {
     time = 0.0;
 
     OneDimCart::State result, expected;
-    system.dynamics(state, control, time, result);
-    expected(0) = state(1);
-    expected(1) = control(0);
+    system.Dynamics(state, control, time, result);
+    expected << state(1), control(0);
 
+    ASSERT_EQ(2u, system.GetNumState());
+    ASSERT_EQ(1u, system.GetNumControl());
     ASSERT_EQ(result, expected);
 }

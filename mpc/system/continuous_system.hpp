@@ -6,18 +6,19 @@
 namespace mpc {
 namespace system {
 
-template <size_t NumState, size_t NumControl, typename Scalar = double>
+template <size_t NUM_STATE, size_t NUM_CONTROL, typename SCALAR = double>
 class ContinuousSystem {
    public:
-    using State = Eigen::Matrix<Scalar, NumState, 1>;
-    using Control = Eigen::Matrix<Scalar, NumControl, 1>;
-    using Time = Scalar;
+    using State = Eigen::Matrix<SCALAR, NUM_STATE, 1>;
+    using Control = Eigen::Matrix<SCALAR, NUM_CONTROL, 1>;
+    using Time = SCALAR;
 
-    const size_t n_state = NumState;
-    const size_t n_control = NumControl;
+    constexpr size_t GetNumState() const { return NUM_STATE; }
 
-    virtual void dynamics(const State &state, const Control &control,
-                           const Time &time, State &result) const = 0;
+    constexpr size_t GetNumControl() const { return NUM_CONTROL; }
+
+    virtual void Dynamics(const State &state, const Control &control,
+                          const Time &time, State &result) const = 0;
 };
 
 }  // namespace system
