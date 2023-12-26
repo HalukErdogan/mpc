@@ -7,18 +7,12 @@ namespace mpc {
 namespace integration {
 namespace stepper {
 
-template <class SYSTEM>
-class EulerStepper : public Stepper<SYSTEM> {
+class EulerStepper : public Stepper {
    public:
-    using Base = Stepper<SYSTEM>;
-    using typename Base::System;
-    using typename Base::State;
-    using typename Base::Control;
-    using typename Base::Time;
-
-    void Step(const System &system, const State &state, const Control &control,
-              const Time &time, const Time &delta_time,
-              State &result) const override {
+    void Step(const ContinuousSystem &system, const Eigen::VectorXd &state,
+              const Eigen::VectorXd &control, const double &time,
+              const double &delta_time,
+              Eigen::VectorXd &result) const override {
         system.Dynamics(state, control, time, result);
         result = state + result * delta_time;
     }

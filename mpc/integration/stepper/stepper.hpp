@@ -1,21 +1,21 @@
 #ifndef MPC_INTEGRATION_STEPPER_HPP
 #define MPC_INTEGRATION_STEPPER_HPP
 
+#include "mpc/system/continuous_system.hpp"
+
 namespace mpc {
 namespace integration {
 namespace stepper {
 
-template <class SYSTEM>
+using namespace mpc::system;
+
 class Stepper {
    public:
-    using System = SYSTEM;
-    using State = typename SYSTEM::State;
-    using Control = typename SYSTEM::Control;
-    using Time = typename SYSTEM::Time;
-
-    virtual void Step(const System &system, const State &state,
-                      const Control &control, const Time &time,
-                      const Time &delta_time, State &result) const = 0;
+    virtual void Step(const ContinuousSystem &system,
+                      const Eigen::VectorXd &state,
+                      const Eigen::VectorXd &control, const double &time,
+                      const double &delta_time,
+                      Eigen::VectorXd &result) const = 0;
 };
 
 }  // namespace stepper

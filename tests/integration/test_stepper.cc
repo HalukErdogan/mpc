@@ -1,15 +1,17 @@
 #include <gtest/gtest.h>
 
-#include "mpc/system/continuous_system.hpp"
 #include "mpc/integration/stepper/euler_stepper.hpp"
+#include "mpc/system/continuous_system.hpp"
 
 using namespace mpc::system;
 using namespace mpc::integration::stepper;
 
-class OneDimCart : public ContinuousSystem<2, 1> {
+class OneDimCart : public ContinuousSystem {
    public:
-    void Dynamics(const State &state, const Control &control,
-                   const Time &time, State &result) const override {
+    int GetNumState() const { return 2; }
+    int GetNumControl() const { return 1; }
+    void Dynamics(const Eigen::VectorXd &state, const Eigen::VectorXd &control,
+                  const double &time, Eigen::VectorXd &result) const override {
         const auto &pos = state(0);
         const auto &vel = state(1);
         const auto &acc = control(0);
@@ -20,19 +22,19 @@ class OneDimCart : public ContinuousSystem<2, 1> {
 
 TEST(StepperTest, EulerStepperIntegration) {
     OneDimCart system;
-    OneDimCart::State state;
-    OneDimCart::Control control;
-    OneDimCart::Time time, delta_time;
+    Eigen::VectorXd state;
+    Eigen::VectorXd control;
+    double time, delta_time;
 
     state << 0.0, 0.0;
     control << 1.0;
     time = 0.0;
     delta_time = 0.1;
 
-    EulerStepper<OneDimCart> stepper;
+    EulerStepper stepper;
 
     // Perform integration step
-    OneDimCart::State result;
+    Eigen::VectorXd result;
     stepper.Step(system, state, control, time, delta_time, result);
 
     // Check the result against the expected values
